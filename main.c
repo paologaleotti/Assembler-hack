@@ -54,17 +54,16 @@ char* c_instruction(char* str, char* ret) {
 		for (int i = 0; i < string_search(str, '='); i++) {
 			before[i] = str[i];
 		}
-		
-		sum = sum + return_translated(before, 1);
+		sum = sum + return_translated(before, 'D');
 		
 		// calcolo DOPO l'uguale
 		char after[10] = {0};
 		int countAfter = 0;
-		for (int i = string_search(str, '=') + 1; i < strlen(str)-1; i++) {
+		for (int i = string_search(str, '=') + 1; i < strlen(str)-2; i++) {
 			after[countAfter++] = str[i];
 		}
-
-		sum = sum + return_translated(after, 2);
+		//printf("|%s|\n", after);
+		sum = sum + return_translated(after, 'O');
 		
 	}
 	else {
@@ -74,19 +73,22 @@ char* c_instruction(char* str, char* ret) {
 		for (int i = 0; i < string_search(str, ';'); i++) {
 			before[i] = str[i];
 		}
-		sum = sum + return_translated(before, 1);
+		sum = sum + return_translated(before, 'O');
 
 		// DOPO del ;
 		char after[10] = {0};
 		int countAfter = 0;
-		for (int i = string_search(str, '=') + 1; i < strlen(str)-1; i++) {
+		for (int i = string_search(str, ';') + 1; i < strlen(str)-2; i++) {
 			after[countAfter++] = str[i];
 		}
-		sum = sum + return_translated(after, 0);
+		//printf("|%s|\n", after);
+		sum = sum + return_translated(after, 'J');
 	}
 	
 	sum = sum + 57344; ///first '111' bits
 	int_to_bin(ret, sum);
+
+	printf("SOMMA FINALE: %d\n", sum);
 	
 	ret[16] = 0;
 	return ret;
@@ -105,7 +107,8 @@ int main(int argc, char** argv) {
 
 	fin = fopen(argv[1], "r");
 	fout = fopen(foutName, "w");
-
+	
+	printf("Sto elaborando il file...\n");
 	while (fgets(str, 20, fin) != NULL) {
 		
 		if (str[0] == '@') {
@@ -122,6 +125,7 @@ int main(int argc, char** argv) {
 			
 		}
 	}
+	printf("File elaborato!\n");
 
 	fclose(fin);
 	fclose(fout);

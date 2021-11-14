@@ -9,6 +9,6 @@ typedef struct{
 int linear_search(keymap* map, int size, char* str);
 
 // 
-int return_translated(char *str, int instrtype);
+int return_translated(char *str, char instrtype);
 
 #endif

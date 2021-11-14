@@ -41,9 +41,9 @@ keymap OPERATION[28] = {
 	"A-D", 448,
 	"D&A", 0,
 	"D|A", 1344,
-	"M", 7164,
+	"M", 7168,
 	"!M", 7232,
-	"-M", 7360,
+	"-M", 7360, 
 	"M+1", 7616,
 	"M-1", 7296,
 	"D+M", 4224,
@@ -63,18 +63,18 @@ int linear_search(keymap* map, int size, char* str) {
 	return -1;
 }
 
-int return_translated(char *str, int instrtype){
+int return_translated(char *str, char instrtype){
 	int translated = 0;
 	switch (instrtype){
-	case 0:
+	case 'J':
 		translated =  linear_search(JUMP, 8, str);
 		printf("CASO JUMP:%d \n", translated);
 		break;
-	case 1:
+	case 'D':
 		translated = linear_search(DEST, 8, str);
 		printf("CASO DEST:%d\n", translated);
 		break;
-	case 2:
+	case 'O':
 		translated = linear_search(OPERATION, 28, str);
 		printf("CASO OPERATION:%d\n", translated);
 		break;
