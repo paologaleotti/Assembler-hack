@@ -62,7 +62,6 @@ char* c_instruction(char* str, char* ret) {
 		for (int i = string_search(str, '=') + 1; i < strlen(str)-2; i++) {
 			after[countAfter++] = str[i];
 		}
-		//printf("|%s|\n", after);
 		sum = sum + return_translated(after, 'O');
 		
 	}
@@ -81,7 +80,6 @@ char* c_instruction(char* str, char* ret) {
 		for (int i = string_search(str, ';') + 1; i < strlen(str)-2; i++) {
 			after[countAfter++] = str[i];
 		}
-		//printf("|%s|\n", after);
 		sum = sum + return_translated(after, 'J');
 	}
 	
