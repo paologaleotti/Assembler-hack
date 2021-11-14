@@ -32,7 +32,7 @@ char* a_instruction(char* str, char* ret) {
 // in case a C-instrucion is read, this set of instruction will be executed.
 char* c_instruction(char* str, char* ret) {
     
-    
+    // IMPLEMENTA QUI IL CUT DI STRINGHE
 
     ret[16] = '\n';
     return ret;
