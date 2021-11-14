@@ -28,7 +28,7 @@ int string_search(char* str, char charToSearch){
 			return i;
 		}	
 	}
-	return NULL;
+	return 0;
 }
 
 
@@ -43,15 +43,24 @@ char* a_instruction(char* str, char* ret) {
 
 // in case a C-instrucion is read, this set of instruction will be executed.
 char* c_instruction(char* str, char* ret) {
-	
-	// DEST=OP
-	char* destBin;
-	for (int i = 0; i < string_search(str, '='); i++){
-		destBin[i]=return_binary(str, 'D')[i];
+
+	// if current line == "dest=operation"
+	if (!string_search(str, ';')){	
+		
+		//converte la OPERATION dal bit 3 al bit 9 di ret
+		for (int i = string_search(str, '=')+1; i < strlen(str); i++){
+			ret[i+3]=return_binary(str, 'O')[i];
+		}
+
+		//converte la DEST dal bit 10 al bit 12 di ret
+		for (int i = 0; i < string_search(str, '='); i++){
+			ret[i+10]=return_binary(str, 'D')[i];
+		}
+	}
+	else{
+
 	}
 	
-	
-
 	ret[16] = '\n';
 	return ret;
 }
