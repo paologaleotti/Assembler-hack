@@ -1,79 +1,83 @@
 #include "translation.h"
+#include <stdio.h>
+#include <string.h>
 
-struct keymap {
-	char *hack, *bin;
-	// *hack is the asm instruction, *bin is its binary value
-} DEST[8] = {
-	"", "000",
-	"M", "001",
-	"D", "010",
-	"MD", "011",
-	"A", "100",
-	"AM", "101",
-	"AD", "110",
-	"AMD", "111"
-}, JUMP[8] = {
-	"", "000",
-	"JGT", "001",
-	"JEQ", "010",
-	"JGE", "011",
-	"JLT", "100",
-	"JNE", "101",
-	"JLE", "110",
-	"JMP", "111"
-}, OPERATION[28] = {
-	"0", "0101010",
-	"1", "0111111",
-	"-1", "0111010",
-	"D", "0001100",
-	"A", "0110000",
-	"!D", "0001101",
-	"!A", "0110001",
-	"-D", "0001111",
-	"-A", "0110011",
-	"D+1", "0011111",
-	"A+1", "0110111",
-	"D-1", "0001110",
-	"A-1", "0110010",
-	"D+A", "0000010",
-	"D-A", "0010011",
-	"A-D", "0000111",
-	"D&A", "0000000",
-	"D|A", "0010101",
-	"M", "1110000",
-	"!M", "1110001",
-	"-M", "1110011",
-	"M+1", "1110111",
-	"M-1", "1110010",
-	"D+M", "1000010",
-	"D-M", "1010011",
-	"M-D", "1000111",
-	"D&M", "1000000",
-	"D|M", "1010101"
+keymap DEST[8] = {
+	"", 0,
+	"M", 8,
+	"D", 16,
+	"MD", 24,
+	"A", 32,
+	"AM", 40,
+	"AD", 48,
+	"AMD", 56
+};
+keymap JUMP[8] = {
+	"", 0,
+	"JGT", 1,
+	"JEQ", 2,
+	"JGE", 3,
+	"JLT", 4,
+	"JNE", 5,
+	"JLE", 6,
+	"JMP", 7
+};
+keymap OPERATION[28] = {
+	"0", 2688,
+	"1", 4032,
+	"-1", 3712,
+	"D", 768,
+	"A", 3072,
+	"!D", 832,
+	"!A", 3136,
+	"-D", 960,
+	"-A", 3264,
+	"D+1", 1984,
+	"A+1", 3520,
+	"D-1", 896,
+	"A-1", 3200,
+	"D+A", 128,
+	"D-A", 1216,
+	"A-D", 448,
+	"D&A", 0,
+	"D|A", 1344,
+	"M", 7164,
+	"!M", 7232,
+	"-M", 7360,
+	"M+1", 7616,
+	"M-1", 7296,
+	"D+M", 4224,
+	"D-M", 5312,
+	"M-D", 4544,
+	"D&M", 4096,
+	"D|M", 5440
 };
 
 // search "str" in the keymap "map" and returns the "str" in its binary form
-char* linear_search(const struct keymap *map, int size, const char* str) {
+int linear_search(keymap* map, int size, char* str) {
 	for (int i=0; i<size; i++) {
 		if (strcmp(map[i].hack, str) == 0) {
-			return map[i].bin;
+			return  map[i].bin;
 		}
 	}	
-	return "NULL";
+	return -1;
 }
 
-char* return_binary(char *str, char instrtype){
-	char* translated;
-
+int return_translated(char *str, int instrtype){
+	int translated = 0;
 	switch (instrtype){
-	case 'J':
+	case 0:
 		translated =  linear_search(JUMP, 8, str);
+		printf("CASO JUMP:%d \n", translated);
 		break;
-	case 'D':
+	case 1:
 		translated = linear_search(DEST, 8, str);
+		printf("CASO DEST:%d\n", translated);
 		break;
-	case 'O':
+	case 2:
 		translated = linear_search(OPERATION, 28, str);
+		printf("CASO OPERATION:%d\n", translated);
 		break;
+	}
 	return translated;
 }

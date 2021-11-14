@@ -1,10 +1,14 @@
 #ifndef TRANSLATION
 #define TRANSLATION
 
+typedef struct{
+	char *hack;
+	int bin;
+} keymap;
 // search "str" in the keymap "map" and returns the "str" in its binary form
-char* linear_search(const struct keymap *map, int size, const char* str);
+int linear_search(keymap* map, int size, char* str);
 
 // 
-char* return_binary(char *str, char instrtype);
+int return_translated(char *str, int instrtype);
 
 #endif

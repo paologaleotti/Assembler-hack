@@ -22,13 +22,13 @@ char* int_to_bin(char* ret, int val) {
 }
 
 // returns the index of the "charToSearch" in "str"
-int string_search(char* str, char charToSearch){
+int string_search(char *str, char charToSearch){
 	for (int i = 0; i < strlen(str); i++){
 		if (str[i]==charToSearch){
 			return i;
 		}	
 	}
-	return 0;
+	return -1;
 }
 
 
@@ -37,31 +37,58 @@ char* a_instruction(char* str, char* ret) {
 	str[0] = '0';
 	int val = atoi(str);
 	int_to_bin(ret, val);
-	ret[16] = '\n';
+	ret[16] = 0;
 	return ret;
 }
 
 // in case a C-instrucion is read, this set of instruction will be executed.
 char* c_instruction(char* str, char* ret) {
 
+	int sum = 0;
 	// if current line == "dest=operation"
-	if (!string_search(str, ';')){	
+	if (string_search(str, ';') == -1){	
+	
+		// calcolo PRIMA dell'uguale
+		char before[10];
 		
-		//converte la OPERATION dal bit 3 al bit 9 di ret
-		for (int i = string_search(str, '=')+1; i < strlen(str); i++){
-			ret[i+3]=return_binary(str, 'O')[i];
+		for (int i = 0; i < string_search(str, '='); i++) {
+			before[i] = str[i];
+		}
+		
+		sum = sum + return_translated(before, 1);
+		
+		// calcolo DOPO l'uguale
+		char after[10] = {0};
+		int countAfter = 0;
+		for (int i = string_search(str, '=') + 1; i < strlen(str)-1; i++) {
+			after[countAfter++] = str[i];
 		}
 
-		//converte la DEST dal bit 10 al bit 12 di ret
-		for (int i = 0; i < string_search(str, '='); i++){
-			ret[i+10]=return_binary(str, 'D')[i];
-		}
+		sum = sum + return_translated(after, 2);
+		
 	}
-	else{
+	else {
+		
+		// PRIMA del ;
+		char before[10];
+		for (int i = 0; i < string_search(str, ';'); i++) {
+			before[i] = str[i];
+		}
+		sum = sum + return_translated(before, 1);
 
+		// DOPO del ;
+		char after[10] = {0};
+		int countAfter = 0;
+		for (int i = string_search(str, '=') + 1; i < strlen(str)-1; i++) {
+			after[countAfter++] = str[i];
+		}
+		sum = sum + return_translated(after, 0);
 	}
 	
-	ret[16] = '\n';
+	sum = sum + 57344; ///first '111' bits
+	int_to_bin(ret, sum);
+	
+	ret[16] = 0;
 	return ret;
 }
 
@@ -79,18 +106,19 @@ int main(int argc, char** argv) {
 	fin = fopen(argv[1], "r");
 	fout = fopen(foutName, "w");
 
-	while (fgets(str, 10, fin) != NULL) {
+	while (fgets(str, 20, fin) != NULL) {
+		
 		if (str[0] == '@') {
 			
 			//A-instruction
 			a_instruction(str, ret);
-			fprintf(fout, ret);
+			fprintf(fout, "%s\n", ret);
 
 		} else {
 
 			//C-instruction
 			c_instruction(str, ret);
-			fprintf(fout, ret);
+			fprintf(fout,"%s\n", ret);
 			
 		}
 	}
