@@ -1,4 +1,4 @@
-FUNZIONI STRINGHE USABILI: strlen, strcpy, strcat e strcmp
+### FUNZIONI STRINGHE USABILI: strlen, strcpy, strcat e strcmp
 
 
 - Logica di scomposizioni di stringha

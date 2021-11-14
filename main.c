@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "translation.h"
 
 // changes the extentionfrom .asm to .hack in order to create the output file.
 char* asm_to_hack(char* foutN, char* fname, char* ext) {
@@ -20,6 +21,17 @@ char* int_to_bin(char* ret, int val) {
     return ret;
 }
 
+// returns the index of the "charToSearch" in "str"
+int string_search(char* str, char charToSearch){
+	for (int i = 0; i < strlen(str); i++){
+		if (str[i]==charToSearch){
+			return i;
+		}	
+	}
+	return NULL;
+}
+
+
 // in case an A-instruction is read, this set of instruction will be executed.
 char* a_instruction(char* str, char* ret) {
     str[0] = '0';
@@ -32,7 +44,13 @@ char* a_instruction(char* str, char* ret) {
 // in case a C-instrucion is read, this set of instruction will be executed.
 char* c_instruction(char* str, char* ret) {
     
-    // IMPLEMENTA QUI IL CUT DI STRINGHE
+    // DEST=OP
+	char* destBin;
+	for (int i = 0; i < string_search(str, '='); i++){
+		destBin[i]=return_binary(str, 'D')[i];
+	}
+	
+	
 
     ret[16] = '\n';
     return ret;
@@ -61,7 +79,7 @@ int main(int argc, char** argv) {
 
         } else {
 
-            //C-instructionut
+            //C-instruction
             c_instruction(str, ret);
             fprintf(fout, ret);
             
