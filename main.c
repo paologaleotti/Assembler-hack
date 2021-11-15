@@ -95,6 +95,9 @@ char* c_instruction(char* str, char* ret) {
 
 int main(int argc, char** argv) {
 
+	list_t *head = NULL;
+	head = (list_t*) malloc(sizeof(list_t));
+
 	FILE* fin;
 	FILE* fout;
 
@@ -112,6 +115,9 @@ int main(int argc, char** argv) {
 	while (fgets(str, 60, fin) != NULL) {
 	
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
+		
+		push_predefined(head);
+		print_listsymbol(head);
 
 		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {	// ignore comment lines, initial spaces, new lines and end lines
 			
@@ -120,7 +126,6 @@ int main(int argc, char** argv) {
 				//A-instruction
 				a_instruction(str, ret);
 				fprintf(fout, "%s\n", ret);
-
 			}
 			else if(str[0] == '('){
 				// SIMBOLO
