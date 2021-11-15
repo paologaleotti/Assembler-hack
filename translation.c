@@ -68,15 +68,15 @@ int return_translated(char *str, char instrtype){
 	switch (instrtype){
 	case 'J':
 		translated =  linear_search(JUMP, 8, str);
-		printf("CASO JUMP:%d \n", translated);
+		// printf("CASO JUMP:%d \n", translated);
 		break;
 	case 'D':
 		translated = linear_search(DEST, 8, str);
-		printf("CASO DEST:%d\n", translated);
+		// printf("CASO DEST:%d\n", translated);
 		break;
 	case 'O':
 		translated = linear_search(OPERATION, 28, str);
-		printf("CASO OPERATION:%d\n", translated);
+		// printf("CASO OPERATION:%d\n", translated);
 		break;
 	}
 	return translated;

@@ -86,7 +86,7 @@ char* c_instruction(char* str, char* ret) {
 	sum = sum + 57344; ///first '111' bits
 	int_to_bin(ret, sum);
 
-	printf("SOMMA FINALE: %d\n", sum);
+	// printf("SOMMA FINALE: %d\n", sum);
 	
 	ret[16] = 0;
 	return ret;
@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 	printf("Sto elaborando il file...\n");
 	while (fgets(str, 20, fin) != NULL) {
 
-		if(str[0] != '/' && str[1] != '/') {
+		if(str[0] != '/' && str[1] != '/') {	//	ignore comment lines
 			
 			if (str[0] == '@') {
 				
