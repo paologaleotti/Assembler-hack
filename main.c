@@ -137,4 +137,5 @@ int main(int argc, char** argv) {
 
 	fclose(fin);
 	fclose(fout);
+	return 0;
 }
