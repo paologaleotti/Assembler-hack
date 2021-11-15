@@ -108,19 +108,22 @@ int main(int argc, char** argv) {
 	
 	printf("Sto elaborando il file...\n");
 	while (fgets(str, 20, fin) != NULL) {
-		
-		if (str[0] == '@') {
-			
-			//A-instruction
-			a_instruction(str, ret);
-			fprintf(fout, "%s\n", ret);
 
-		} else {
-
-			//C-instruction
-			c_instruction(str, ret);
-			fprintf(fout,"%s\n", ret);
+		if(!(str[0] == '/' && str[1] == '/')) {
 			
+			if (str[0] == '@') {
+				
+				//A-instruction
+				a_instruction(str, ret);
+				fprintf(fout, "%s\n", ret);
+
+			} else {
+
+				//C-instruction
+				c_instruction(str, ret);
+				fprintf(fout,"%s\n", ret);
+				
+			}
 		}
 	}
 	printf("File elaborato!\n");
