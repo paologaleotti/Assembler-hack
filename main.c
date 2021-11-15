@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "translation.h"
+#include "symbol.h"
 
 // changes the extentionfrom .asm to .hack in order to create the output file.
 char* asm_to_hack(char* foutN, char* fname, char* ext) {
@@ -107,26 +108,28 @@ int main(int argc, char** argv) {
 	fout = fopen(foutName, "w");
 	
 	printf("Sto elaborando il file...\n");
+	
 	while (fgets(str, 20, fin) != NULL) {
+	
+		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
 
 		if(str[0] != '/' && str[1] != '/') {	//	ignore comment lines
 			
 			if (str[0] == '@') {
 				
 				//A-instruction
-				str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
-
 				a_instruction(str, ret);
 				fprintf(fout, "%s\n", ret);
 
-			} else {
+			}
+			else if(str[0] == '('){
+				// SIMBOLO
+			}
+			else{
 
 				//C-instruction
-				str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
-
 				c_instruction(str, ret);
 				fprintf(fout,"%s\n", ret);
-				
 			}
 		}
 	}

@@ -63,6 +63,7 @@ int linear_search(keymap* map, int size, char* str) {
 	return -1;
 }
 
+// switch between the three different keymaps given the instruction type (jump, dest, operation)
 int return_translated(char *str, char instrtype){
 	int translated = 0;
 	switch (instrtype){
