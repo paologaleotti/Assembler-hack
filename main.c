@@ -59,7 +59,7 @@ char* c_instruction(char* str, char* ret) {
 		// calcolo DOPO l'uguale
 		char after[10] = {0};
 		int countAfter = 0;
-		for (int i = string_search(str, '=') + 1; i < strlen(str)-2; i++) {
+		for (int i = string_search(str, '=') + 1; i < strlen(str); i++) {
 			after[countAfter++] = str[i];
 		}
 		sum = sum + return_translated(after, 'O');
@@ -77,7 +77,7 @@ char* c_instruction(char* str, char* ret) {
 		// DOPO del ;
 		char after[10] = {0};
 		int countAfter = 0;
-		for (int i = string_search(str, ';') + 1; i < strlen(str)-2; i++) {
+		for (int i = string_search(str, ';') + 1; i < strlen(str); i++) {
 			after[countAfter++] = str[i];
 		}
 		sum = sum + return_translated(after, 'J');
@@ -109,17 +109,21 @@ int main(int argc, char** argv) {
 	printf("Sto elaborando il file...\n");
 	while (fgets(str, 20, fin) != NULL) {
 
-		if(!(str[0] == '/' && str[1] == '/')) {
+		if(!(str[0] == '/' && str[1] == '/')) {		// ignore comment lines "/"
 			
 			if (str[0] == '@') {
 				
 				//A-instruction
+				str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
+
 				a_instruction(str, ret);
 				fprintf(fout, "%s\n", ret);
 
 			} else {
 
 				//C-instruction
+				str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
+
 				c_instruction(str, ret);
 				fprintf(fout,"%s\n", ret);
 				
