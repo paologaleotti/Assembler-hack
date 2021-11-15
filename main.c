@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 	FILE* fin;
 	FILE* fout;
 
-	char str[20];
+	char str[60];
 	char ret[17];
 	char foutName[strlen(argv[1]) + 2];
 
@@ -109,11 +109,11 @@ int main(int argc, char** argv) {
 	
 	printf("Sto elaborando il file...\n");
 	
-	while (fgets(str, 20, fin) != NULL) {
+	while (fgets(str, 60, fin) != NULL) {
 	
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
 
-		if(str[0] != '/' && str[1] != '/') {	//	ignore comment lines
+		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {	// ignore comment lines, initial spaces, new lines and end lines
 			
 			if (str[0] == '@') {
 				
@@ -137,5 +137,4 @@ int main(int argc, char** argv) {
 
 	fclose(fin);
 	fclose(fout);
-	stampa();
 }
