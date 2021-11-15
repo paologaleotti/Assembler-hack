@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 	printf("Sto elaborando il file...\n");
 	while (fgets(str, 20, fin) != NULL) {
 
-		if(!(str[0] == '/' && str[1] == '/')) {		// ignore comment lines "/"
+		if(str[0] != '/' && str[1] != '/') {
 			
 			if (str[0] == '@') {
 				
