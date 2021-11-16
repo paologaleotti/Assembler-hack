@@ -10,7 +10,7 @@ void remove_comments(char* str) {
 	int i = 0;
 	while(str[i] != '\0') {
 		if (str[i] == '/') {
-			str[i] = '\0';
+			str[i] = 0;
 			break;
 		}
 		i++;
@@ -28,7 +28,7 @@ void clean_string(char* str) {
 		}
 		i++;
 	}
-	str[j] = '\0';
+	str[j] = 0;
 	remove_comments(str);
 }
 
@@ -114,9 +114,6 @@ char* c_instruction(char* str, char* ret) {
 	
 	sum = sum + 57344; ///first '111' bits
 	int_to_bin(ret, sum);
-
-	// printf("SOMMA FINALE: %d\n", sum);
-	
 	ret[16] = 0;
 	return ret;
 }
@@ -130,12 +127,19 @@ void first_pass(FILE* fin, listsymbol* ll){
 		clean_string(str);
 		
 		if(str[0] != 0) {
+			
 			// if current line is a A-instruction
-			if (str[0] == '@') {
-				romcounter++;
-			}
-			else if(str[0]=='('){
-				push_to_list(&ll, str, romcounter);
+			if(str[0]=='('){
+				char withoutBracket[200];
+				
+				for(int i=0, j = 0; i<strlen(str); i++){
+					if(str[i]!='(' && str[i]!=')'){
+						withoutBracket[j++] = str[i];
+					}
+					withoutBracket[j] = 0;
+				}
+				//romcoun
+				push_to_list(&ll, withoutBracket, romcounter);
 			}
 			// if current line is a C-instruction
 			else {
@@ -150,6 +154,7 @@ int main(int argc, char** argv) {
 	FILE* fin;	// input file
 	FILE* fout;	// output file
 	listsymbol* ll = malloc(sizeof(listsymbol));	// symbol table
+	int ramCounter = 15;
 
 	char str[200];	// line to read from input file
 	char ret[17];	// line to write to output file
@@ -170,20 +175,33 @@ int main(int argc, char** argv) {
 	while (fgets(str, 200, fin) != NULL) {
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
 		clean_string(str);
-		if(str[0] != 0) {	// ignore empty lines
+		if(str[0] != 0 && str[0]!='(') {	// ignore empty lines
 			
 			if (str[0] == '@') {
-				
-				//A-instruction
-				a_instruction(str, ret);
-				fprintf(fout, "%s\n", ret);
+				if(str[1] >= '0' && str[1] <= '9'){
+					a_instruction(str, ret);
+					fprintf(fout, "%s\n", ret);
+				}
+				else{
+					char withoutAt[200];
+					for (int i = 0; i < strlen(str); i++){
+						withoutAt[i] = str[i+1];
+					}
 
-			}
-			else if(str[0] == '('){
-				// SIMBOLO
+					int addr = check_label(ll, withoutAt);
+					
+					if(addr != -1){
+						int_to_bin(ret, addr);
+					}
+					else{
+						ramCounter = process_variable(ll, withoutAt, ramCounter);
+						int_to_bin(ret, ramCounter);
+					}
+					
+					fprintf(fout, "%s\n", ret);
+				}
 			}
 			else{
-
 				//C-instruction
 				c_instruction(str, ret);
 				fprintf(fout,"%s\n", ret);

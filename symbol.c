@@ -10,12 +10,12 @@ symboltable PREDEFINED[23] = {
 };
 
 char* dont_lose_my_string(const char *src) {
-    char *dst = malloc(strlen (src) + 1); 	 	// alloca spazio per la stringa
-    if (dst == NULL){							// non c'è memoria per la destinazione?
+	char *dst = malloc(strlen (src) + 1); 	 	// alloca spazio per la stringa
+	if (dst == NULL){							// non c'è memoria per la destinazione?
 		return NULL;
 	}
-    strcpy(dst, src);                     		// copia la stringa
-    return dst;                            		// ritorna la nuova stringa
+	strcpy(dst, src);                     		// copia la stringa
+	return dst;                            		// ritorna la nuova stringa
 }
 
 
@@ -37,11 +37,11 @@ void push_predefined(listsymbol **head) {
 	}
 }
 
-// function to check if the label is already in the list and return the address
+// check if the label is already in the list and return the address
 int check_label(listsymbol *head, char* label) {
 	listsymbol *current = head;
 	while(current != NULL) {
-		if (strcmp(current->label, label) == 0) {
+		if (current->label!=NULL && strcmp(current->label, label) == 0) {
 			return current->address;
 		}
 		current = current->next;
@@ -56,4 +56,10 @@ void print_list(listsymbol *head) {
 		printf("%s:%d\n", current->label, current->address);
 		current = current->next;
 	}
+}
+
+int process_variable(listsymbol* ll, char* str, int ramCounter){
+	ramCounter++;
+	push_to_list(&ll, str, ramCounter);
+	return ramCounter;
 }

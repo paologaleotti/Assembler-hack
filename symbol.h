@@ -18,5 +18,6 @@ void print_list(listsymbol *head);
 void push_predefined(listsymbol **head);
 int check_label(listsymbol *head, char* label);
 char* dont_lose_my_string(const char *src);
+int process_variable(listsymbol* ll, char* str, int ramCounter);
 
 #endif
