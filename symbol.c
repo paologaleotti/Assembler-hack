@@ -9,6 +9,16 @@ symboltable PREDEFINED[23] = {
 	"SCREEN", 16384, "KBD", 24576
 };
 
+char *dont_lose_my_string(const char *src) {
+    char *dst = malloc(strlen (src) + 1); 	 	// alloca spazio per la stringa
+    if (dst == NULL){							// non c'è memoria per la destinazione?
+		return NULL;
+	}
+    strcpy(dst, src);                     		// copia la stringa
+    return dst;                            		// ritorna la nuova stringa
+}
+
+
 void push_to_list(listsymbol **head, char* label, int address) {
 	
 	listsymbol *current = *head;
@@ -16,11 +26,9 @@ void push_to_list(listsymbol **head, char* label, int address) {
 		current = current->next;
 	}
 	current->next = (listsymbol*)malloc(sizeof(listsymbol));
-	current->next->label = label;
+	current->next->label = dont_lose_my_string(label);
 	current->next->address = address;
 	current->next->next = NULL;
-	///////DEBUG
-	printf("PUSH:|%s|:%d|\n", current->next->label, (int)strlen(label));
 }
 
 void push_predefined(listsymbol **head) {
@@ -45,8 +53,7 @@ int check_label(listsymbol *head, char* label) {
 void print_list(listsymbol *head) {
 	listsymbol *current = head;
 	while(current != NULL) {
-		printf(" %s:%d ", current->label, current->address);
+		printf("%s:%d\n", current->label, current->address);
 		current = current->next;
 	}
-	printf("\n");
 }

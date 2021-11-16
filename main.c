@@ -130,7 +130,6 @@ void first_pass(FILE* fin, listsymbol* ll){
 		clean_string(str);
 		
 		if(str[0] != 0) {
-			
 			// if current line is a A-instruction
 			if (str[0] == '@') {
 				romcounter++;
@@ -151,7 +150,6 @@ int main(int argc, char** argv) {
 	FILE* fin;	// input file
 	FILE* fout;	// output file
 	listsymbol* ll = malloc(sizeof(listsymbol));	// symbol table
-	int romcounter = 0;	// rom counter
 
 	char str[200];	// line to read from input file
 	char ret[17];	// line to write to output file
