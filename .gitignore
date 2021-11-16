@@ -2,3 +2,4 @@
 *.asm
 *.hack
 .asm_dir
+.vscode

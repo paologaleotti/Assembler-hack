@@ -1,8 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "translation.h"
 #include "symbol.h"
+
+// void function that remove all the comments from the string
+void remove_comments(char* str) {
+	int i = 0;
+	while(str[i] != '\0') {
+		if (str[i] == '/') {
+			str[i] = '\0';
+			break;
+		}
+		i++;
+	}
+}
+
+// void function that take a string pointer and cleans the spaces tabs and newlines
+void clean_string(char* str) {
+	int i = 0;
+	int j = 0;
+	while (str[i] != '\0') {
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n') {
+			str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = '\0';
+	remove_comments(str);
+}
 
 // changes the extentionfrom .asm to .hack in order to create the output file.
 char* asm_to_hack(char* foutN, char* fname, char* ext) {
@@ -94,18 +122,26 @@ char* c_instruction(char* str, char* ret) {
 }
 
 void first_pass(FILE* fin, listsymbol* ll){
-	char str[60];
+	char str[200];
 	int romcounter = 0;
 
-	while (fgets(str, 60, fin)) {
+	while (fgets(str, 200, fin)) {
 		str[strlen(str)-2] = 0;
-		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {
+		clean_string(str);
+		
+		if(str[0] != 0) {
+			
 			// if current line is a A-instruction
 			if (str[0] == '@') {
 				romcounter++;
 			}
 			else if(str[0]=='('){
-				str[0] = 0;
+
+				// remove the first bracket "("
+				for (int i = 0; i < strlen(str); i++){
+					str[i] = str[i+1];
+				}
+				// remove the last bracket ")"
 				str[string_search(str, ')')] = 0;
 				push_to_list(&ll, str, romcounter);
 			}
@@ -124,7 +160,7 @@ int main(int argc, char** argv) {
 	listsymbol* ll = malloc(sizeof(listsymbol));	// symbol table
 	int romcounter = 0;	// rom counter
 
-	char str[60];	// line to read from input file
+	char str[200];	// line to read from input file
 	char ret[17];	// line to write to output file
 	char foutName[strlen(argv[1]) + 2]; // output file name
 
@@ -140,10 +176,10 @@ int main(int argc, char** argv) {
 	first_pass(fin, ll);
 	rewind(fin);
 
-	while (fgets(str, 60, fin) != NULL) {
+	while (fgets(str, 200, fin) != NULL) {
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
-
-		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {	// ignore comment lines, initial spaces, new lines and end lines
+		clean_string(str);
+		if(str[0] != 0) {	// ignore empty lines
 			
 			if (str[0] == '@') {
 				

@@ -10,14 +10,17 @@ symboltable PREDEFINED[23] = {
 };
 
 void push_to_list(listsymbol **head, char* label, int address) {
+	
 	listsymbol *current = *head;
 	while(current->next != NULL) {
 		current = current->next;
 	}
 	current->next = (listsymbol*)malloc(sizeof(listsymbol));
-	current->next->address = address;
 	current->next->label = label;
+	current->next->address = address;
 	current->next->next = NULL;
+	///////DEBUG
+	printf("PUSH:|%s|:%d|\n", current->next->label, (int)strlen(label));
 }
 
 void push_predefined(listsymbol **head) {
