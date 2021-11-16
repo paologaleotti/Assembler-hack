@@ -9,7 +9,7 @@ symboltable PREDEFINED[23] = {
 	"SCREEN", 16384, "KBD", 24576
 };
 
-char *dont_lose_my_string(const char *src) {
+char* dont_lose_my_string(const char *src) {
     char *dst = malloc(strlen (src) + 1); 	 	// alloca spazio per la stringa
     if (dst == NULL){							// non c'è memoria per la destinazione?
 		return NULL;
