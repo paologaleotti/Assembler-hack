@@ -136,13 +136,6 @@ void first_pass(FILE* fin, listsymbol* ll){
 				romcounter++;
 			}
 			else if(str[0]=='('){
-
-				// remove the first bracket "("
-				for (int i = 0; i < strlen(str); i++){
-					str[i] = str[i+1];
-				}
-				// remove the last bracket ")"
-				str[string_search(str, ')')] = 0;
 				push_to_list(&ll, str, romcounter);
 			}
 			// if current line is a C-instruction
@@ -174,7 +167,7 @@ int main(int argc, char** argv) {
 	
 
 	first_pass(fin, ll);
-	rewind(fin);
+	rewind(fin);	// go back to the beginning of the file
 
 	while (fgets(str, 200, fin) != NULL) {
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
