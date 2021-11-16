@@ -93,14 +93,40 @@ char* c_instruction(char* str, char* ret) {
 	return ret;
 }
 
+void first_pass(FILE* fin, listsymbol* ll){
+	char str[60];
+	int romcounter = 0;
+
+	while (fgets(str, 60, fin)) {
+		str[strlen(str)-2] = 0;
+		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {
+			// if current line is a A-instruction
+			if (str[0] == '@') {
+				romcounter++;
+			}
+			else if(str[0]=='('){
+				str[0] = 0;
+				str[string_search(str, ')')] = 0;
+				push_to_list(&ll, str, romcounter);
+			}
+			// if current line is a C-instruction
+			else {
+				romcounter++;
+			}
+		}
+	}
+}
+
 int main(int argc, char** argv) {
 
-	FILE* fin;
-	FILE* fout;
+	FILE* fin;	// input file
+	FILE* fout;	// output file
+	listsymbol* ll = malloc(sizeof(listsymbol));	// symbol table
+	int romcounter = 0;	// rom counter
 
-	char str[60];
-	char ret[17];
-	char foutName[strlen(argv[1]) + 2];
+	char str[60];	// line to read from input file
+	char ret[17];	// line to write to output file
+	char foutName[strlen(argv[1]) + 2]; // output file name
 
 	asm_to_hack(foutName, argv[1], ".hack");
 
@@ -108,9 +134,13 @@ int main(int argc, char** argv) {
 	fout = fopen(foutName, "w");
 	
 	printf("Sto elaborando il file...\n");
+	push_predefined(&ll);
 	
+
+	first_pass(fin, ll);
+	rewind(fin);
+
 	while (fgets(str, 60, fin) != NULL) {
-	
 		str[strlen(str)-2] = 0; // elimino i caratteri in eccesso della riga
 
 		if(str[0] != '/' && str[1] != '/' && str[0] != '\n' && str[0] != ' ' && str[0] != 0) {	// ignore comment lines, initial spaces, new lines and end lines
@@ -133,6 +163,7 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
+	print_list(ll);
 	printf("File elaborato!\n");
 
 	fclose(fin);
