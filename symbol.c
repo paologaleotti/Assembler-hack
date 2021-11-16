@@ -49,15 +49,6 @@ int check_label(listsymbol *head, char* label) {
 	return -1;
 }
 
-// print linked list (DEBUG ONLY)
-void print_list(listsymbol *head) {
-	listsymbol *current = head;
-	while(current != NULL) {
-		printf("%s:%d\n", current->label, current->address);
-		current = current->next;
-	}
-}
-
 int process_variable(listsymbol* ll, char* str, int ramCounter){
 	ramCounter++;
 	push_to_list(&ll, str, ramCounter);

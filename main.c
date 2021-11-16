@@ -138,7 +138,6 @@ void first_pass(FILE* fin, listsymbol* ll){
 					}
 					withoutBracket[j] = 0;
 				}
-				//romcoun
 				push_to_list(&ll, withoutBracket, romcounter);
 			}
 			// if current line is a C-instruction
@@ -208,7 +207,6 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
-	print_list(ll);
 	printf("File elaborato!\n");
 
 	fclose(fin);
