@@ -13,5 +13,10 @@ char* int_to_binary(char* retvalue, int value);
 // cerco nella stringa il carattere ch e ritorno l'indice corrispondente (-1 se non è nella stringa)
 int search_char_in_string(char *string, char ch);
 
+// funzione indispensabile per fare il push di una riga letta dal file input nella linked list
+// contenente i simboli. Senza di questa il puntatore della riga verrà sovrascritto ad ogni ciclo
+// di lettura del file input. Allocando memoria ad una copia della stringa (riga letta in questa iterazione),
+// si evita di "perderla" e sarà quindi possibile aggiungerla alla linked list.
+char* allocate_duplicated_string(const char *source);
 
 #endif

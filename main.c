@@ -29,7 +29,7 @@ char *process_C_instr(char *str, char *ret){
 		{
 			before[i] = str[i];
 		}
-		sum = sum + return_translated(before, 'D');
+		sum = sum + return_integer_C_instruction(before, 'D');
 
 		// calcolo DOPO l'uguale
 		char after[10] = {0};
@@ -38,7 +38,7 @@ char *process_C_instr(char *str, char *ret){
 		{
 			after[countAfter++] = str[i];
 		}
-		sum = sum + return_translated(after, 'O');
+		sum = sum + return_integer_C_instruction(after, 'O');
 	}
 	else{
 
@@ -47,7 +47,7 @@ char *process_C_instr(char *str, char *ret){
 		for (int i = 0; i < search_char_in_string(str, ';'); i++){
 			before[i] = str[i];
 		}
-		sum = sum + return_translated(before, 'O');
+		sum = sum + return_integer_C_instruction(before, 'O');
 
 		// DOPO del ;
 		char after[10] = {0};
@@ -55,7 +55,7 @@ char *process_C_instr(char *str, char *ret){
 		for (int i = search_char_in_string(str, ';') + 1; i < strlen(str); i++){
 			after[countAfter++] = str[i];
 		}
-		sum = sum + return_translated(after, 'J');
+		sum = sum + return_integer_C_instruction(after, 'J');
 	}
 
 	sum = sum + 57344; ///first '111' bits

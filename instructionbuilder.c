@@ -54,29 +54,28 @@ keymap OPERATION[28] = {
 	"D|M", 5440
 };
 
-// search "str" in the keymap "map" and returns the "str" in its binary form
-int linear_search(keymap* map, int size, char* str) {
+int search_instruction(keymap* map, int size, char* str) {
 	for (int i=0; i<size; i++) {
 		if (strcmp(map[i].hack, str) == 0) {
-			return  map[i].bin;
+			return  map[i].to_convert;
 		}
 	}	
 	return -1;
 }
 
 // switch between the three different keymaps given the instruction type (jump, dest, operation)
-int return_translated(char *str, char instrtype){
-	int translated = 0;
-	switch (instrtype){
+int return_integer_C_instruction(char *str, char typeOfInstruction) {
+	int to_convert = 0;
+	switch (typeOfInstruction){
 	case 'J':
-		translated =  linear_search(JUMP, 8, str);
+		to_convert =  search_instruction(JUMP, 8, str);
 		break;
 	case 'D':
-		translated = linear_search(DEST, 8, str);
+		to_convert = search_instruction(DEST, 8, str);
 		break;
 	case 'O':
-		translated = linear_search(OPERATION, 28, str);
+		to_convert = search_instruction(OPERATION, 28, str);
 		break;
 	}
-	return translated;
+	return to_convert;
 }

@@ -51,3 +51,12 @@ int search_char_in_string(char *string, char ch){
 	}
 	return -1;
 }
+
+char* allocate_duplicated_string(const char *source) {
+	char *destination = malloc(strlen (source) + 1);
+	if (destination == NULL){
+		return NULL;
+	}
+	strcpy(destination, source);
+	return destination;
+}

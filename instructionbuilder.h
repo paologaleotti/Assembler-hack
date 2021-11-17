@@ -3,12 +3,14 @@
 
 typedef struct{
 	char *hack;
-	int bin;
+	int to_convert;
 } keymap;
-// search "str" in the keymap "map" and returns the "str" in its binary form
-int linear_search(keymap* map, int size, char* str);
 
-// 
-int return_translated(char *str, char instrtype);
+// ricerca la stringa nella mappa e restituisce -1 se non viene trovata e l'intero associato se trovata. 
+int search_instruction(keymap* map, int size, char* str);
+
+// a seconda del tipo di istruzione, la cerca nella keymap giusta e 
+//ritorna il corrispondente valore intero (da convertire in bin. successivamente)
+int return_integer_C_instruction(char *str, char typeOfInstruction);
 
 #endif
