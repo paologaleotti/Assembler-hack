@@ -151,14 +151,15 @@ int main(int argc, char **argv){
 	fileinput = fopen(argv[1], "r");
 	fileoutput = fopen(outputfilename, "w");
 
-	printf("Sto elaborando il file...\n");
 	push_predefined(&ll);
+
+	printf("Processo il file <%s>...\n", argv[1]);
 
 	first_pass(fileinput, ll);
 	rewind(fileinput);
 	second_pass(fileinput, fileoutput, ll);
 
-	printf("File elaborato!\n");
+	printf("<%s> è stato tradotto con successo nel file --> <%s>\n", argv[1], outputfilename);
 
 	fclose(fileinput);
 	fclose(fileoutput);
