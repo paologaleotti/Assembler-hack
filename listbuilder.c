@@ -1,6 +1,6 @@
-#include "symbol.h"
+#include "listbuilder.h"
+
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 symboltable PREDEFINED[23] = {

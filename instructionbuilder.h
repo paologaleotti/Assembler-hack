@@ -1,5 +1,5 @@
-#ifndef TRANSLATION
-#define TRANSLATION
+#ifndef INSTRUCTIONBUILDER_H
+#define INSTRUCTIONBUILDER_H
 
 typedef struct{
 	char *hack;

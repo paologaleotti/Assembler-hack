@@ -1,5 +1,5 @@
-#ifndef SYMBOL
-#define SYMBOL
+#ifndef LISTBUILDER_H
+#define LISTBUILDER_H
 
 typedef struct{
 	char* label;
