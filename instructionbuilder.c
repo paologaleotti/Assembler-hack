@@ -63,7 +63,6 @@ int search_instruction(keymap* map, int size, char* str) {
 	return -1;
 }
 
-// switch between the three different keymaps given the instruction type (jump, dest, operation)
 int return_integer_C_instruction(char *str, char typeOfInstruction) {
 	int to_convert = 0;
 	switch (typeOfInstruction){
