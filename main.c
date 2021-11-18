@@ -42,14 +42,12 @@ char *process_C_instr(char *str, char *ret){
 	}
 	else{
 
-		// PRIMA del ;
 		char before[10];
 		for (int i = 0; i < search_char_in_string(str, ';'); i++){
 			before[i] = str[i];
 		}
 		sum = sum + return_integer_C_instruction(before, 'O');
 
-		// DOPO del ;
 		char after[10] = {0};
 		int countAfter = 0;
 		for (int i = search_char_in_string(str, ';') + 1; i < strlen(str); i++){
@@ -109,19 +107,16 @@ void second_pass(FILE *fin, FILE *fout, listsymbol *ll){
 				}
 				else{
 					char withoutAt[200];
-					for (int i = 0; i < strlen(str); i++)
-					{
+					for (int i = 0; i < strlen(str); i++){
 						withoutAt[i] = str[i + 1];
 					}
 
 					int addr = check_label(ll, withoutAt);
 
-					if (addr != -1)
-					{
+					if (addr != -1){
 						int_to_binary(ret, addr);
 					}
-					else
-					{
+					else{
 						ramCounter = process_variable(ll, withoutAt, ramCounter);
 						int_to_binary(ret, ramCounter);
 					}
