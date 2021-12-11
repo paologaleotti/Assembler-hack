@@ -1,5 +1,5 @@
-#ifndef UTILITIES
-#define UTILITIES
+#ifndef UTILITIES_H
+#define UTILITIES_H
 
 // cambia l'estensione da .asm dell'input a .hack
 char* change_extension(char* outputfilename, char* filename, char* extension);

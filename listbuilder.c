@@ -28,7 +28,6 @@ void push_predefined(listsymbol **head) {
 	}
 }
 
-// check if the label is already in the list and return the address
 int check_label(listsymbol *head, char* label) {
 	listsymbol *current = head;
 	while(current != NULL) {

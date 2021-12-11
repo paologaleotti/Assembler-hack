@@ -6,7 +6,6 @@
 #include "listbuilder.h"
 #include "utilities.h"
 
-// in case an A-instruction is read, this set of instruction will be executed.
 char *process_A_instr(char *str, char *ret){
 	str[0] = '0';
 	int val = atoi(str);
@@ -15,18 +14,15 @@ char *process_A_instr(char *str, char *ret){
 	return ret;
 }
 
-// in case a C-instrucion is read, this set of instruction will be executed.
 char *process_C_instr(char *str, char *ret){
 
 	int sum = 0;
-	// if current line == "dest=operation"
 	if (search_char_in_string(str, ';') == -1){
 
 		// calcolo PRIMA dell'uguale
 		char before[10];
 
-		for (int i = 0; i < search_char_in_string(str, '='); i++)
-		{
+		for (int i = 0; i < search_char_in_string(str, '='); i++){
 			before[i] = str[i];
 		}
 		sum = sum + return_integer_C_instruction(before, 'D');
@@ -34,8 +30,8 @@ char *process_C_instr(char *str, char *ret){
 		// calcolo DOPO l'uguale
 		char after[10] = {0};
 		int countAfter = 0;
-		for (int i = search_char_in_string(str, '=') + 1; i < strlen(str); i++)
-		{
+
+		for (int i = search_char_in_string(str, '=') + 1; i < strlen(str); i++){
 			after[countAfter++] = str[i];
 		}
 		sum = sum + return_integer_C_instruction(after, 'O');
@@ -56,17 +52,18 @@ char *process_C_instr(char *str, char *ret){
 		sum = sum + return_integer_C_instruction(after, 'J');
 	}
 
-	sum = sum + 57344; ///first '111' bits
+	sum = sum + 57344; // aggiungo questo valore per mettere i primi bit a 111
 	int_to_binary(ret, sum);
-	ret[16] = 0;
+	ret[16] = 0;	// aggiungo il carattere di fine stringa
 	return ret;
 }
 
 void first_pass(FILE *fin, listsymbol *ll){
-	char str[200];
+	char str[200];	// riga letta dal file
 	int romcounter = 0;
 
 	while (fgets(str, 200, fin)){
+		// elimino gli ultimi due caratteri perchè i file di Nand2Tetris hanno la codifica di windows (CRLF)
 		str[strlen(str) - 2] = 0;
 		stringcleaner(str);
 
@@ -82,7 +79,7 @@ void first_pass(FILE *fin, listsymbol *ll){
 				}
 				push_to_list(&ll, withoutBracket, romcounter);
 			}
-			// if current line is a C-instruction
+			// se è qualsiasi istruzione (NON SIMBOLO) aumento il contatore
 			else{
 				romcounter++;
 			}
@@ -92,11 +89,11 @@ void first_pass(FILE *fin, listsymbol *ll){
 
 void second_pass(FILE *fin, FILE *fout, listsymbol *ll){
 	int ramCounter = 15;
-	char str[200]; // line to read from input file
-	char ret[17];  // line to write to output file
+	char str[200];
+	char ret[17];	// riga da scrivere nel file di output
 
 	while (fgets(str, 200, fin) != NULL){
-		str[strlen(str) - 2] = 0; // elimino i caratteri in eccesso della riga
+		str[strlen(str) - 2] = 0;
 		stringcleaner(str);
 		if (str[0] != 0 && str[0] != '('){ // ignore empty lines
 
@@ -135,26 +132,25 @@ void second_pass(FILE *fin, FILE *fout, listsymbol *ll){
 
 int main(int argc, char **argv){
 
-	FILE *fileinput;									 // input file
-	FILE *fileoutput;									 // output file
-	listsymbol *ll = malloc(sizeof(listsymbol)); // symbol table
+	FILE *fileinput;	// dichiaro file di input
+	FILE *fileoutput;	// dichiaro file di output
+	listsymbol *ll = malloc(sizeof(listsymbol)); // dichiaro la symbol table
 
-	char outputfilename[strlen(argv[1]) + 2]; // output file name
+	char outputfilename[strlen(argv[1]) + 2]; // genero il nome del file di output
 
-	change_extension(outputfilename, argv[1], ".hack");
+	change_extension(outputfilename, argv[1], ".hack");	// cambio l'estensione del file di output a ".hack"
 
 	fileinput = fopen(argv[1], "r");
 	fileoutput = fopen(outputfilename, "w");
 
-	push_predefined(&ll);
+	push_predefined(&ll);	// inserisco nella symbol table i simboli predefiniti del linguaggio hack
 
-	printf("Processo il file <%s>...\n", argv[1]);
+	printf("--------Processo il file '%s'---------\n", argv[1]);
 
 	first_pass(fileinput, ll);
-	rewind(fileinput);
+	rewind(fileinput);	// torno all'inizio del fileinput
 	second_pass(fileinput, fileoutput, ll);
-
-	printf("<%s> è stato tradotto con successo nel file --> <%s>\n", argv[1], outputfilename);
+	printf("[FATTO]'%s' è stato tradotto con successo nel file --> '%s'\n", argv[1], outputfilename);
 
 	fclose(fileinput);
 	fclose(fileoutput);
