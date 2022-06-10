@@ -1,3 +1,4 @@
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 # Assembler-hack
 
 A program written in C to translate assembler hack (.asm) code into its binary form (.hack).
